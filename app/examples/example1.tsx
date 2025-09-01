@@ -1,40 +1,40 @@
 import { Stack } from "expo-router";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
     withTiming,
 } from "react-native-reanimated";
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
-const Example1 = () => {
+export default function Example() {
     const scale = useSharedValue(1);
 
-    const AnimatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ scale: scale.value }],
-        };
-    });
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: scale.value }],
+    }));
 
-    const ChangeScale = (scaleTo: number) => {
-        scale.value = withTiming(scaleTo);
-    };
+    const tap = Gesture.Tap()
+        .onBegin(() => {
+            "worklet";
+            scale.value = withTiming(2);
+        })
+        .onFinalize(() => {
+            "worklet";
+            scale.value = withTiming(1);
+        });
 
     return (
         <>
             <Stack.Screen options={{ title: "Basic example" }} />
             <View style={styles.container}>
-                <AnimatedPressable
-                    onPressIn={() => ChangeScale(2)}
-                    onPressOut={() => ChangeScale(1)}
-                    style={[styles.button, AnimatedStyle]}
-                />
+                <GestureDetector gesture={tap}>
+                    <Animated.View style={[styles.button, animatedStyle]} />
+                </GestureDetector>
             </View>
         </>
     );
-};
-
+}
 const styles = StyleSheet.create({
     button: {
         width: 100,
@@ -48,5 +48,3 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 });
-
-export default Example1;
