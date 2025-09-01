@@ -16,7 +16,7 @@ const HomeScreen = () => {
                 flex: 1,
                 padding: 20,
                 gap: 10,
-                backgroundColor: "lightgray",
+                backgroundColor: "#F7F8FA",
             }}
         >
             {examples.map((example) => {
@@ -50,7 +50,7 @@ const HomeScreen = () => {
                         >
                             <Text
                                 style={{
-                                    fontWeight: "bold",
+                                    fontWeight: "semibold",
                                     color: isChecked ? "gray" : "black",
                                 }}
                             >
@@ -60,10 +60,10 @@ const HomeScreen = () => {
                         <TouchableOpacity
                             onPress={() => toggleChecked(example.id)}
                             style={{
-                                width: 32,
-                                height: 32,
-                                borderRadius: 16,
-                                borderWidth: 2,
+                                width: 45,
+                                height: 45,
+                                borderRadius: 10,
+                                borderWidth: 1,
                                 borderColor: isChecked ? "#007AFF" : "gray",
                                 alignItems: "center",
                                 justifyContent: "center",
