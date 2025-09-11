@@ -6,7 +6,7 @@ import Animated, {
     withSpring,
 } from "react-native-reanimated";
 
-function Example() {
+function DragButton() {
     const positionX = useSharedValue(0);
     const positionY = useSharedValue(0);
 
@@ -37,7 +37,7 @@ function Example() {
 export default function Screen1() {
     return (
         <View style={styles.container}>
-            <Example />
+            <DragButton />
         </View>
     );
 }
