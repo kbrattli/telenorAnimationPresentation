@@ -3,7 +3,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
-    withTiming,
+    withSpring,
 } from "react-native-reanimated";
 
 function Example() {
@@ -23,8 +23,8 @@ function Example() {
             positionY.value = event.translationY;
         })
         .onEnd(() => {
-            positionX.value = withTiming(0);
-            positionY.value = withTiming(0);
+            positionX.value = withSpring(0);
+            positionY.value = withSpring(0);
         });
 
     return (
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     button: {
         width: 100,
         height: 100,
-        borderRadius: 50,
+        borderRadius: 20,
         backgroundColor: "#3b82f6",
     },
     container: {
