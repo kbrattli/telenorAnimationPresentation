@@ -3,14 +3,12 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
+    withTiming,
 } from "react-native-reanimated";
 
 function Example() {
     const positionX = useSharedValue(0);
     const positionY = useSharedValue(0);
-
-    const startX = useSharedValue(0);
-    const startY = useSharedValue(0);
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [
@@ -20,13 +18,13 @@ function Example() {
     }));
 
     const gesture = Gesture.Pan()
-        .onStart(() => {
-            startX.value = positionX.value;
-            startY.value = positionY.value;
-        })
         .onUpdate((event) => {
-            positionX.value = startX.value + event.translationX;
-            positionY.value = startY.value + event.translationY;
+            positionX.value = event.translationX;
+            positionY.value = event.translationY;
+        })
+        .onEnd(() => {
+            positionX.value = withTiming(0);
+            positionY.value = withTiming(0);
         });
 
     return (
