@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 const HomeScreen = () => {
     const router = useRouter();
-    const examples = [{ id: "example1", title: "Basic Animation" }];
+    const examples = [
+        { id: "example1", title: "Basic Animation" },
+        { id: "example2", title: "Slider Animation" },
+    ];
     const [checked, setChecked] = useState<{ [key: string]: boolean }>({});
 
     const toggleChecked = (id: string) => {
