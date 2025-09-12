@@ -6,6 +6,7 @@ const HomeScreen = () => {
     const examples = [
         { id: "example1", title: "Basic Animation" },
         { id: "example2", title: "Slider Animation" },
+        { id: "tinder", title: "Tinder Animation" },
     ];
     const [checked, setChecked] = useState<{ [key: string]: boolean }>({});
 
