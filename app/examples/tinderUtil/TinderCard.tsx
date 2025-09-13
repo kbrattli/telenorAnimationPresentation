@@ -1,25 +1,35 @@
+import { Entypo } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import type { FC } from "react";
+import React, { useState } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+
 import Animated, {
+    Extrapolation,
+    interpolate,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
+import { usePosition } from "../tinder";
 
 const { width } = Dimensions.get("window");
-console.log(width);
+const likeColor = "#86CA53";
+const rejectColor = "#E34286";
 
 type TinderCardProps = {
     photo: any;
 };
 
 export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
+    const { UniversalPositionX } = usePosition();
     const positionX = useSharedValue(0);
     const positionY = useSharedValue(0);
+    const [isUnmounted, setIsUnmounted] = useState(false);
 
-    const animatedStyle = useAnimatedStyle(() => {
+    const animatedSwipeStyle = useAnimatedStyle(() => {
         return {
             transform: [
                 { translateX: positionX.value },
@@ -29,8 +39,33 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
         };
     });
 
+    const animatedHeartStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(
+            positionX.value,
+            [0, 20, 30, 1000],
+            [0, 0, 1, 1]
+        );
+        return {
+            opacity: opacity,
+        };
+    });
+
+    const animatedCrossStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(
+            positionX.value,
+            [-30, -20],
+            [1, 0],
+            Extrapolation.CLAMP
+        );
+        return { opacity };
+    });
+
     const gesture = Gesture.Pan()
+        .onStart(() => {
+            UniversalPositionX.value = 0;
+        })
         .onUpdate((e) => {
+            UniversalPositionX.value = e.translationX;
             positionX.value = e.translationX;
             positionY.value = e.translationY;
         })
@@ -38,16 +73,28 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
             const velocity = event.velocityX;
             const direction = Math.sign(velocity);
             if (Math.abs(velocity) > 500) {
-                positionX.value = withTiming(direction * (width + 100));
+                positionX.value = withTiming(
+                    direction * (width + 100),
+                    { duration: 300 },
+                    (finished) => {
+                        if (finished) {
+                            scheduleOnRN(setIsUnmounted, true);
+                        }
+                    }
+                );
             } else {
                 positionX.value = withTiming(0);
                 positionY.value = withTiming(0);
             }
         });
 
+    if (isUnmounted) {
+        return null;
+    }
+
     return (
         <GestureDetector gesture={gesture}>
-            <Animated.View style={[styles.card, animatedStyle]}>
+            <Animated.View style={[styles.card, animatedSwipeStyle]}>
                 <Image source={photo} style={styles.image} />
                 <LinearGradient
                     colors={["transparent", "transparent", "rgba(0,0,0,1)"]}
@@ -62,6 +109,12 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
                     <Text style={styles.distance}>5 meter unna</Text>
                 </View>
                 <TopBar />
+                <Animated.View style={[styles.heart, animatedHeartStyle]}>
+                    <Entypo name="heart" size={120} color={likeColor} />
+                </Animated.View>
+                <Animated.View style={[styles.cross, animatedCrossStyle]}>
+                    <Entypo name="cross" size={120} color={rejectColor} />
+                </Animated.View>
             </Animated.View>
         </GestureDetector>
     );
@@ -132,5 +185,17 @@ const styles = StyleSheet.create({
     },
     segmentActive: {
         backgroundColor: "white",
+    },
+    heart: {
+        position: "absolute",
+        top: 50,
+        left: 20,
+        transform: [{ rotate: "-20deg" }],
+    },
+    cross: {
+        position: "absolute",
+        top: 50,
+        right: 20,
+        transform: [{ rotate: "20deg" }],
     },
 });
