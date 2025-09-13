@@ -23,6 +23,15 @@ export default function Screen() {
                 }}
             >
                 <TinderCard photo={tinderPhotos[0]} />
+                <TinderCard photo={tinderPhotos[1]} />
+                <TinderCard photo={tinderPhotos[2]} />
+                <TinderCard photo={tinderPhotos[0]} />
+                <TinderCard photo={tinderPhotos[1]} />
+                <TinderCard photo={tinderPhotos[2]} />
+                <TinderCard photo={tinderPhotos[0]} />
+                <TinderCard photo={tinderPhotos[1]} />
+                <TinderCard photo={tinderPhotos[2]} />
+
                 <TinderButtons />
             </View>
             <TinderTabMenu />
