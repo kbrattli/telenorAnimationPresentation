@@ -15,14 +15,13 @@ type TinderCardProps = {
 export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
     const positionX = useSharedValue(0);
     const positionY = useSharedValue(0);
-    const rotation = useSharedValue(0);
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
             transform: [
                 { translateX: positionX.value },
                 { translateY: positionY.value },
-                { rotate: `${-rotation.value}deg` },
+                { rotate: `${-positionX.value / 25}deg` },
             ],
         };
     });
@@ -31,12 +30,16 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
         .onUpdate((e) => {
             positionX.value = e.translationX;
             positionY.value = e.translationY;
-            rotation.value = e.translationX / 25;
         })
-        .onEnd(() => {
-            positionX.value = withTiming(0);
-            positionY.value = withTiming(0);
-            rotation.value = withTiming(0);
+        .onEnd((event) => {
+            const velocity = event.velocityX;
+            const direction = Math.sign(velocity);
+            if (Math.abs(velocity) > 500) {
+                positionX.value = withTiming(direction * 500);
+            } else {
+                positionX.value = withTiming(0);
+                positionY.value = withTiming(0);
+            }
         });
 
     return (
