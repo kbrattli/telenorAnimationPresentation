@@ -5,6 +5,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import { TinderButtons } from "./tinderUtil/TinderButtons";
 import { TinderCard } from "./tinderUtil/TinderCard";
 import { TinderHeader } from "./tinderUtil/TinderDumbStyle";
+import { TinderTabMenu } from "./tinderUtil/TinderTabMenu";
 
 const tinderPhotos = [tinderImage1, tinderImage2, tinderImage4];
 
@@ -24,6 +25,7 @@ export default function Screen() {
                 <TinderCard photo={tinderPhotos[0]} />
                 <TinderButtons />
             </View>
+            <TinderTabMenu />
         </View>
     );
 }
