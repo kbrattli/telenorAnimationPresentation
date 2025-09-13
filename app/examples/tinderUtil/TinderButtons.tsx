@@ -28,6 +28,31 @@ export const TinderButtons = () => {
             : withTiming(0, { duration: 100 });
     }, [UniversalPositionX]);
 
+    const likeHeartScale = useDerivedValue(() => {
+        return UniversalPositionX.value > 0
+            ? withTiming(5, { duration: 300 })
+            : withTiming(1, { duration: 100 });
+    }, [UniversalPositionX]);
+
+    const rejectCrossScale = useDerivedValue(() => {
+        return UniversalPositionX.value < 0
+            ? withTiming(10, { duration: 300 })
+            : withTiming(1, { duration: 100 });
+    }, [UniversalPositionX]);
+
+    // Background icon scales (from 0 to 1 to simulate size 0 to 50)
+    const likeBackgroundScale = useDerivedValue(() => {
+        return UniversalPositionX.value > 0
+            ? withTiming(1, { duration: 300 })
+            : withTiming(0, { duration: 100 });
+    }, [UniversalPositionX]);
+
+    const rejectBackgroundScale = useDerivedValue(() => {
+        return UniversalPositionX.value < 0
+            ? withTiming(1, { duration: 300 })
+            : withTiming(0, { duration: 100 });
+    }, [UniversalPositionX]);
+
     const animatedLikeCircleStyle = useAnimatedStyle(() => {
         return {
             transform: [{ scale: likeCircleScale.value }],
@@ -37,6 +62,30 @@ export const TinderButtons = () => {
     const animatedRejectCircleStyle = useAnimatedStyle(() => {
         return {
             transform: [{ scale: rejectCircleScale.value }],
+        };
+    });
+
+    const animatedHeartStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: likeHeartScale.value }],
+        };
+    });
+
+    const animatedCrossStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: rejectCrossScale.value }],
+        };
+    });
+
+    const animatedHeartBackgroundStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: likeBackgroundScale.value }],
+        };
+    });
+
+    const animatedCrossBackgroundStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: rejectBackgroundScale.value }],
         };
     });
 
@@ -55,13 +104,13 @@ export const TinderButtons = () => {
                     name="cross"
                     size={50}
                     color={rejectColor}
-                    style={styles.icon}
+                    style={[styles.icon, animatedCrossStyle]}
                 />
                 <AnimatedEntypo
                     name="cross"
-                    size={0}
+                    size={50}
                     color={circleColor}
-                    style={styles.icon}
+                    style={[styles.icon, animatedCrossBackgroundStyle]}
                 />
             </Animated.View>
             <Animated.View style={[styles.circle, animatedLikeCircleStyle]}>
@@ -69,13 +118,13 @@ export const TinderButtons = () => {
                     name="heart"
                     size={50}
                     color={likeColor}
-                    style={styles.icon}
+                    style={[styles.icon, animatedHeartStyle]}
                 />
                 <AnimatedEntypo
                     name="heart"
-                    size={0}
+                    size={50}
                     color={circleColor}
-                    style={styles.icon}
+                    style={[styles.icon, animatedHeartBackgroundStyle]}
                 />
             </Animated.View>
         </View>
