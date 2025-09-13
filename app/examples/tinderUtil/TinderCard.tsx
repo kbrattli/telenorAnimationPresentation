@@ -5,6 +5,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
+    withTiming,
 } from "react-native-reanimated";
 
 type TinderCardProps = {
@@ -26,11 +27,17 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
         };
     });
 
-    const gesture = Gesture.Pan().onUpdate((e) => {
-        positionX.value = e.translationX;
-        positionY.value = e.translationY;
-        rotation.value = e.translationX / 25;
-    });
+    const gesture = Gesture.Pan()
+        .onUpdate((e) => {
+            positionX.value = e.translationX;
+            positionY.value = e.translationY;
+            rotation.value = e.translationX / 25;
+        })
+        .onEnd(() => {
+            positionX.value = withTiming(0);
+            positionY.value = withTiming(0);
+            rotation.value = withTiming(0);
+        });
 
     return (
         <GestureDetector gesture={gesture}>
