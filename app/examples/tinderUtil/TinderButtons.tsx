@@ -31,26 +31,25 @@ export const TinderButtons = () => {
     const likeHeartScale = useDerivedValue(() => {
         return UniversalPositionX.value > 0
             ? withTiming(5, { duration: 300 })
-            : withTiming(1, { duration: 100 });
+            : withTiming(1, { duration: 200 });
     }, [UniversalPositionX]);
 
     const rejectCrossScale = useDerivedValue(() => {
         return UniversalPositionX.value < 0
             ? withTiming(10, { duration: 300 })
-            : withTiming(1, { duration: 100 });
+            : withTiming(1, { duration: 200 });
     }, [UniversalPositionX]);
 
-    // Background icon scales (from 0 to 1 to simulate size 0 to 50)
     const likeBackgroundScale = useDerivedValue(() => {
         return UniversalPositionX.value > 0
             ? withTiming(1, { duration: 300 })
-            : withTiming(0, { duration: 100 });
+            : withTiming(0, { duration: 200 });
     }, [UniversalPositionX]);
 
     const rejectBackgroundScale = useDerivedValue(() => {
         return UniversalPositionX.value < 0
             ? withTiming(1, { duration: 300 })
-            : withTiming(0, { duration: 100 });
+            : withTiming(0, { duration: 200 });
     }, [UniversalPositionX]);
 
     const animatedLikeCircleStyle = useAnimatedStyle(() => {
