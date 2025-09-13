@@ -42,8 +42,9 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
     const animatedHeartStyle = useAnimatedStyle(() => {
         const opacity = interpolate(
             positionX.value,
-            [0, 20, 30, 1000],
-            [0, 0, 1, 1]
+            [20, 30],
+            [0, 1],
+            Extrapolation.CLAMP
         );
         return {
             opacity: opacity,
@@ -75,7 +76,7 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
             if (Math.abs(velocity) > 500) {
                 positionX.value = withTiming(
                     direction * (width + 100),
-                    { duration: 300 },
+                    undefined, // Default duration
                     (finished) => {
                         if (finished) {
                             scheduleOnRN(setIsUnmounted, true);
@@ -85,6 +86,7 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
             } else {
                 positionX.value = withTiming(0);
                 positionY.value = withTiming(0);
+                UniversalPositionX.value = withTiming(0);
             }
         });
 

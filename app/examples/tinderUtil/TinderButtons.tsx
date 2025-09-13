@@ -1,11 +1,45 @@
 import { Entypo } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
+import Animated, {
+    useAnimatedStyle,
+    useDerivedValue,
+    withTiming,
+} from "react-native-reanimated";
+import { usePosition } from "../tinder";
 
 const rejectColor = "#E34286";
 const likeColor = "#86CA53";
 const circleColor = "#23282C";
 
+const AnimatedEntypo = Animated.createAnimatedComponent(Entypo);
+
 export const TinderButtons = () => {
+    const { UniversalPositionX } = usePosition();
+
+    const likeCircleScale = useDerivedValue(() => {
+        return UniversalPositionX.value >= 0
+            ? withTiming(1, { duration: 100 })
+            : withTiming(0, { duration: 100 });
+    }, [UniversalPositionX]);
+
+    const rejectCircleScale = useDerivedValue(() => {
+        return UniversalPositionX.value <= 0
+            ? withTiming(1, { duration: 100 })
+            : withTiming(0, { duration: 100 });
+    }, [UniversalPositionX]);
+
+    const animatedLikeCircleStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: likeCircleScale.value }],
+        };
+    });
+
+    const animatedRejectCircleStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: rejectCircleScale.value }],
+        };
+    });
+
     return (
         <View
             style={{
@@ -16,22 +50,50 @@ export const TinderButtons = () => {
                 bottom: 0,
             }}
         >
-            <View style={styles.circle}>
-                <Entypo name="cross" size={50} color={rejectColor} />
-            </View>
-            <View style={styles.circle}>
-                <Entypo name="heart" size={50} color={likeColor} />
-            </View>
+            <Animated.View style={[styles.circle, animatedRejectCircleStyle]}>
+                <AnimatedEntypo
+                    name="cross"
+                    size={50}
+                    color={rejectColor}
+                    style={styles.icon}
+                />
+                <AnimatedEntypo
+                    name="cross"
+                    size={0}
+                    color={circleColor}
+                    style={styles.icon}
+                />
+            </Animated.View>
+            <Animated.View style={[styles.circle, animatedLikeCircleStyle]}>
+                <AnimatedEntypo
+                    name="heart"
+                    size={50}
+                    color={likeColor}
+                    style={styles.icon}
+                />
+                <AnimatedEntypo
+                    name="heart"
+                    size={0}
+                    color={circleColor}
+                    style={styles.icon}
+                />
+            </Animated.View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     circle: {
+        position: "relative",
+        width: 70,
+        height: 70,
         backgroundColor: circleColor,
-        borderRadius: 50,
-        padding: 10,
+        borderRadius: 35,
         justifyContent: "center",
         alignItems: "center",
+        overflow: "hidden",
+    },
+    icon: {
+        position: "absolute",
     },
 });
