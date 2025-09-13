@@ -1,10 +1,13 @@
 import { Entypo } from "@expo/vector-icons";
+
 import { StyleSheet, View } from "react-native";
+
 import Animated, {
     useAnimatedStyle,
     useDerivedValue,
     withTiming,
 } from "react-native-reanimated";
+
 import { usePosition } from "../tinder";
 
 const rejectColor = "#E34286";
@@ -34,16 +37,16 @@ export const TinderButtons = () => {
             : withTiming(1, { duration: 200 });
     }, [UniversalPositionX]);
 
-    const likeBackgroundScale = useDerivedValue(() => {
-        return UniversalPositionX.value > 0
-            ? withTiming(1, { duration: 300 })
-            : withTiming(0, { duration: 200 });
-    }, [UniversalPositionX]);
-
     const rejectCrossScale = useDerivedValue(() => {
         return UniversalPositionX.value < 0
             ? withTiming(10, { duration: 300 })
             : withTiming(1, { duration: 200 });
+    }, [UniversalPositionX]);
+
+    const likeBackgroundScale = useDerivedValue(() => {
+        return UniversalPositionX.value > 0
+            ? withTiming(1, { duration: 300 })
+            : withTiming(0, { duration: 200 });
     }, [UniversalPositionX]);
 
     const rejectBackgroundScale = useDerivedValue(() => {
@@ -105,6 +108,7 @@ export const TinderButtons = () => {
                     color={rejectColor}
                     style={[styles.icon, animatedCrossStyle]}
                 />
+
                 <AnimatedEntypo
                     name="cross"
                     size={50}
@@ -112,6 +116,7 @@ export const TinderButtons = () => {
                     style={[styles.icon, animatedCrossBackgroundStyle]}
                 />
             </Animated.View>
+
             <Animated.View style={[styles.circle, animatedLikeCircleStyle]}>
                 <AnimatedEntypo
                     name="heart"
@@ -119,6 +124,7 @@ export const TinderButtons = () => {
                     color={likeColor}
                     style={[styles.icon, animatedHeartStyle]}
                 />
+
                 <AnimatedEntypo
                     name="heart"
                     size={50}

@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 const HomeScreen = () => {
     const router = useRouter();
     const examples = [
+        { id: "react", title: "React Animation" },
         { id: "example1", title: "Basic Animation" },
         { id: "example2", title: "Slider Animation" },
         { id: "tinder", title: "Tinder Animation" },
