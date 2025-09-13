@@ -3,6 +3,7 @@ import { Entypo } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
 
 import Animated, {
+    DerivedValue,
     useAnimatedStyle,
     useDerivedValue,
     withTiming,
@@ -15,6 +16,130 @@ const likeColor = "#86CA53";
 const circleColor = "#23282C";
 
 const AnimatedEntypo = Animated.createAnimatedComponent(Entypo);
+
+const AnimatedCross = ({
+    crossScale,
+    backgroundScale,
+}: {
+    crossScale: DerivedValue<any>;
+    backgroundScale: DerivedValue<any>;
+}) => {
+    const animatedCrossStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: crossScale.value }],
+        };
+    });
+
+    const animatedCrossBackgroundStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: backgroundScale.value }],
+        };
+    });
+
+    return (
+        <>
+            <AnimatedEntypo
+                name="cross"
+                size={50}
+                color={rejectColor}
+                style={[styles.icon, animatedCrossStyle]}
+            />
+            <AnimatedEntypo
+                name="cross"
+                size={50}
+                color={circleColor}
+                style={[styles.icon, animatedCrossBackgroundStyle]}
+            />
+        </>
+    );
+};
+
+const AnimatedHeart = ({
+    heartScale,
+    backgroundScale,
+}: {
+    heartScale: DerivedValue<any>;
+    backgroundScale: DerivedValue<any>;
+}) => {
+    const animatedHeartStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: heartScale.value }],
+        };
+    });
+
+    const animatedHeartBackgroundStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: backgroundScale.value }],
+        };
+    });
+
+    return (
+        <>
+            <AnimatedEntypo
+                name="heart"
+                size={50}
+                color={likeColor}
+                style={[styles.icon, animatedHeartStyle]}
+            />
+            <AnimatedEntypo
+                name="heart"
+                size={50}
+                color={circleColor}
+                style={[styles.icon, animatedHeartBackgroundStyle]}
+            />
+        </>
+    );
+};
+
+const RejectCircle = ({
+    circleScale,
+    crossScale,
+    backgroundScale,
+}: {
+    circleScale: DerivedValue<any>;
+    crossScale: DerivedValue<any>;
+    backgroundScale: DerivedValue<any>;
+}) => {
+    const animatedRejectCircleStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: circleScale.value }],
+        };
+    });
+
+    return (
+        <Animated.View style={[styles.circle, animatedRejectCircleStyle]}>
+            <AnimatedCross
+                crossScale={crossScale}
+                backgroundScale={backgroundScale}
+            />
+        </Animated.View>
+    );
+};
+
+const LikeCircle = ({
+    circleScale,
+    heartScale,
+    backgroundScale,
+}: {
+    circleScale: DerivedValue<any>;
+    heartScale: DerivedValue<any>;
+    backgroundScale: DerivedValue<any>;
+}) => {
+    const animatedLikeCircleStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: circleScale.value }],
+        };
+    });
+
+    return (
+        <Animated.View style={[styles.circle, animatedLikeCircleStyle]}>
+            <AnimatedHeart
+                heartScale={heartScale}
+                backgroundScale={backgroundScale}
+            />
+        </Animated.View>
+    );
+};
 
 export const TinderButtons = () => {
     const { UniversalPositionX } = usePosition();
@@ -100,38 +225,19 @@ export const TinderButtons = () => {
                 position: "absolute",
                 bottom: 0,
             }}
+            // Doesnt need its own component
         >
-            <Animated.View style={[styles.circle, animatedRejectCircleStyle]}>
-                <AnimatedEntypo
-                    name="cross"
-                    size={50}
-                    color={rejectColor}
-                    style={[styles.icon, animatedCrossStyle]}
-                />
+            <RejectCircle
+                circleScale={rejectCircleScale}
+                crossScale={rejectCrossScale}
+                backgroundScale={rejectBackgroundScale}
+            />
 
-                <AnimatedEntypo
-                    name="cross"
-                    size={50}
-                    color={circleColor}
-                    style={[styles.icon, animatedCrossBackgroundStyle]}
-                />
-            </Animated.View>
-
-            <Animated.View style={[styles.circle, animatedLikeCircleStyle]}>
-                <AnimatedEntypo
-                    name="heart"
-                    size={50}
-                    color={likeColor}
-                    style={[styles.icon, animatedHeartStyle]}
-                />
-
-                <AnimatedEntypo
-                    name="heart"
-                    size={50}
-                    color={circleColor}
-                    style={[styles.icon, animatedHeartBackgroundStyle]}
-                />
-            </Animated.View>
+            <LikeCircle
+                circleScale={likeCircleScale}
+                heartScale={likeHeartScale}
+                backgroundScale={likeBackgroundScale}
+            />
         </View>
     );
 };
