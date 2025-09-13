@@ -1,30 +1,56 @@
 import { LinearGradient } from "expo-linear-gradient";
 import type { FC } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+} from "react-native-reanimated";
 
 type TinderCardProps = {
     photo: any;
 };
 
 export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
+    const positionX = useSharedValue(0);
+    const positionY = useSharedValue(0);
+    const rotation = useSharedValue(0);
+
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { translateX: positionX.value },
+                { translateY: positionY.value },
+                { rotate: `${-rotation.value}deg` },
+            ],
+        };
+    });
+
+    const gesture = Gesture.Pan().onUpdate((e) => {
+        positionX.value = e.translationX;
+        positionY.value = e.translationY;
+        rotation.value = e.translationX / 25;
+    });
+
     return (
-        <View style={styles.card}>
-            <Image source={photo} style={styles.image} />
+        <GestureDetector gesture={gesture}>
+            <Animated.View style={[styles.card, animatedStyle]}>
+                <Image source={photo} style={styles.image} />
+                <LinearGradient
+                    colors={["transparent", "transparent", "rgba(0,0,0,1)"]}
+                    locations={[0, 0.6, 1]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    style={styles.bottomGradient}
+                />
 
-            <LinearGradient
-                colors={["transparent", "transparent", "rgba(0,0,0,1)"]}
-                locations={[0, 0.6, 1]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-                style={styles.bottomGradient}
-            />
-
-            <View style={styles.meta}>
-                <Text style={styles.name}>Kenneth 24</Text>
-                <Text style={styles.distance}>5 meter unna</Text>
-            </View>
-            <TopBar />
-        </View>
+                <View style={styles.meta}>
+                    <Text style={styles.name}>Kenneth 24</Text>
+                    <Text style={styles.distance}>5 meter unna</Text>
+                </View>
+                <TopBar />
+            </Animated.View>
+        </GestureDetector>
     );
 };
 
