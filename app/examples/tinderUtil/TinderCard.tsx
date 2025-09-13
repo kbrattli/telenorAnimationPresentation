@@ -1,12 +1,15 @@
 import { LinearGradient } from "expo-linear-gradient";
 import type { FC } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
     withTiming,
 } from "react-native-reanimated";
+
+const { width } = Dimensions.get("window");
+console.log(width);
 
 type TinderCardProps = {
     photo: any;
@@ -35,7 +38,7 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
             const velocity = event.velocityX;
             const direction = Math.sign(velocity);
             if (Math.abs(velocity) > 500) {
-                positionX.value = withTiming(direction * 500);
+                positionX.value = withTiming(direction * (width + 100));
             } else {
                 positionX.value = withTiming(0);
                 positionY.value = withTiming(0);
