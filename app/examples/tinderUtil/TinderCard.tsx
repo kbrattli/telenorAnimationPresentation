@@ -73,6 +73,7 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
         .onEnd((event) => {
             const velocity = event.velocityX;
             const direction = Math.sign(velocity);
+            UniversalPositionX.value = withTiming(0, { duration: 100 });
             if (Math.abs(velocity) > 500) {
                 positionX.value = withTiming(
                     direction * (width + 100),
@@ -86,7 +87,6 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
             } else {
                 positionX.value = withTiming(0);
                 positionY.value = withTiming(0);
-                UniversalPositionX.value = withTiming(0);
             }
         });
 

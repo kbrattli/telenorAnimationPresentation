@@ -34,16 +34,16 @@ export const TinderButtons = () => {
             : withTiming(1, { duration: 200 });
     }, [UniversalPositionX]);
 
-    const rejectCrossScale = useDerivedValue(() => {
-        return UniversalPositionX.value < 0
-            ? withTiming(10, { duration: 300 })
-            : withTiming(1, { duration: 200 });
-    }, [UniversalPositionX]);
-
     const likeBackgroundScale = useDerivedValue(() => {
         return UniversalPositionX.value > 0
             ? withTiming(1, { duration: 300 })
             : withTiming(0, { duration: 200 });
+    }, [UniversalPositionX]);
+
+    const rejectCrossScale = useDerivedValue(() => {
+        return UniversalPositionX.value < 0
+            ? withTiming(10, { duration: 300 })
+            : withTiming(1, { duration: 200 });
     }, [UniversalPositionX]);
 
     const rejectBackgroundScale = useDerivedValue(() => {
