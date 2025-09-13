@@ -23,13 +23,25 @@ export const TinderCard: FC<TinderCardProps> = ({ photo }) => {
                 <Text style={styles.name}>Kenneth 24</Text>
                 <Text style={styles.distance}>5 meter unna</Text>
             </View>
+            <TopBar />
+        </View>
+    );
+};
+
+const TopBar = () => {
+    return (
+        <View style={styles.topBar}>
+            <View style={[styles.segment, styles.segmentActive]} />
+            <View style={styles.segment} />
+            <View style={styles.segment} />
+            <View style={styles.segment} />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 20,
+        borderRadius: 10,
         position: "absolute",
         width: "100%",
         height: "95%",
@@ -64,5 +76,22 @@ const styles = StyleSheet.create({
     distance: {
         color: "white",
         fontSize: 16,
+    },
+    topBar: {
+        position: "absolute",
+        top: 10,
+        left: 10,
+        right: 10,
+        flexDirection: "row",
+        gap: 3,
+    },
+    segment: {
+        height: 4,
+        flex: 1,
+        borderRadius: 10,
+        backgroundColor: "rgba(255,255,255,0.3)",
+    },
+    segmentActive: {
+        backgroundColor: "white",
     },
 });
