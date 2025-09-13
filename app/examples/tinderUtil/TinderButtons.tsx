@@ -13,7 +13,7 @@ export const TinderButtons = () => {
                 justifyContent: "space-around",
                 width: "100%",
                 position: "absolute",
-                bottom: 17,
+                bottom: 0,
             }}
         >
             <View style={styles.circle}>
