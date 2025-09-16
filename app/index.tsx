@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 const HomeScreen = () => {
     const router = useRouter();
-    const examples = [
+    const examples: {
+        id: "react" | "example1" | "example2" | "tinder";
+        title: string;
+    }[] = [
         { id: "react", title: "React Animation" },
         { id: "example1", title: "Basic Animation" },
         { id: "example2", title: "Slider Animation" },
