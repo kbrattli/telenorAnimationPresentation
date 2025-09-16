@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 
-function Example() {
+function Button() {
     const [scale, setScale] = useState(1);
 
     const onPressIn = () => {
@@ -23,7 +23,17 @@ function Example() {
 export default function Screen1() {
     return (
         <View style={styles.container}>
-            <Example />
+            <Text
+                style={{
+                    fontSize: 24,
+                    fontWeight: "bold",
+                    position: "absolute",
+                    top: 50,
+                }}
+            >
+                React Animation
+            </Text>
+            <Button />
         </View>
     );
 }
@@ -37,6 +47,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        gap: 100,
         justifyContent: "center",
         alignItems: "center",
     },
