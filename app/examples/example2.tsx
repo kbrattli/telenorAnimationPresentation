@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
@@ -6,10 +6,11 @@ import Animated, {
     withSpring,
 } from "react-native-reanimated";
 
-function DragButton() {
-    const positionX = useSharedValue(0);
+function DraggableButton() {
+    const positionX = useSharedValue(0); // Lives on both threads
     const positionY = useSharedValue(0);
 
+    // Animated style that updates on UI thread
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [
             { translateX: positionX.value },
@@ -17,6 +18,7 @@ function DragButton() {
         ],
     }));
 
+    // Gesture that does not involve JS thread at all
     const gesture = Gesture.Pan()
         .onUpdate((event) => {
             positionX.value = event.translationX;
@@ -37,7 +39,19 @@ function DragButton() {
 export default function Screen1() {
     return (
         <View style={styles.container}>
-            <DragButton />
+            <Text
+                style={{
+                    fontSize: 24,
+                    fontWeight: "bold",
+                    position: "absolute",
+                    top: 50,
+                    padding: 20,
+                    textAlign: "center",
+                }}
+            >
+                Draggable button with Reanimated + Gesture Handler
+            </Text>
+            <DraggableButton />
         </View>
     );
 }

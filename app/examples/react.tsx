@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 
 function Button() {
-    const [scale, setScale] = useState(1);
+    const [scale, setScale] = useState(1); // Lives only in JS thread
 
     const onPressIn = () => {
-        setScale(2);
+        setScale(2); // Update scale to 2 on JS thread and trigger re-render
     };
 
     const onPressOut = () => {

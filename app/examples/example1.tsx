@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import Animated, {
     useAnimatedStyle,
@@ -6,14 +6,16 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 
-function Example() {
-    const scale = useSharedValue(1);
+function Button() {
+    const scale = useSharedValue(1); // Lives on both JS and UI thread
 
+    // Animated style that updates on UI thread
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ scale: scale.value }],
     }));
 
     const onPressIn = () => {
+        // Update scale gradually to 2 on UI thread
         scale.value = withTiming(2);
     };
 
@@ -23,6 +25,7 @@ function Example() {
 
     return (
         <Pressable onPressIn={onPressIn} onPressOut={onPressOut}>
+            {/* View that supports updating its style on the UI thread */}
             <Animated.View style={[styles.button, animatedStyle]} />
         </Pressable>
     );
@@ -31,7 +34,17 @@ function Example() {
 export default function Screen1() {
     return (
         <View style={styles.container}>
-            <Example />
+            <Text
+                style={{
+                    fontSize: 24,
+                    fontWeight: "bold",
+                    position: "absolute",
+                    top: 50,
+                }}
+            >
+                Reanimated Animation
+            </Text>
+            <Button />
         </View>
     );
 }
