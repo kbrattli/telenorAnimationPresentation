@@ -13,6 +13,70 @@ const rejectColor = "#E34286";
 const likeColor = "#86CA53";
 const circleColor = "#23282C";
 
+export const TinderButtons = () => {
+    const { UniversalPositionX } = usePosition();
+
+    const likeCircleScale = useDerivedValue(() => {
+        return UniversalPositionX.value >= 0
+            ? withTiming(1, { duration: 100 })
+            : withTiming(0, { duration: 100 });
+    }, [UniversalPositionX]);
+
+    const rejectCircleScale = useDerivedValue(() => {
+        return UniversalPositionX.value <= 0
+            ? withTiming(1, { duration: 100 })
+            : withTiming(0, { duration: 100 });
+    }, [UniversalPositionX]);
+
+    const likeHeartScale = useDerivedValue(() => {
+        return UniversalPositionX.value > 0
+            ? withTiming(5, { duration: 300 })
+            : withTiming(1, { duration: 200 });
+    }, [UniversalPositionX]);
+
+    const rejectCrossScale = useDerivedValue(() => {
+        return UniversalPositionX.value < 0
+            ? withTiming(10, { duration: 300 })
+            : withTiming(1, { duration: 200 });
+    }, [UniversalPositionX]);
+
+    const likeBackgroundScale = useDerivedValue(() => {
+        return UniversalPositionX.value > 0
+            ? withTiming(1, { duration: 300 })
+            : withTiming(0, { duration: 200 });
+    }, [UniversalPositionX]);
+
+    const rejectBackgroundScale = useDerivedValue(() => {
+        return UniversalPositionX.value < 0
+            ? withTiming(1, { duration: 300 })
+            : withTiming(0, { duration: 200 });
+    }, [UniversalPositionX]);
+
+    return (
+        <View
+            style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                width: "100%",
+                position: "absolute",
+                bottom: 0,
+            }}
+        >
+            <RejectCircle
+                circleScale={rejectCircleScale}
+                crossScale={rejectCrossScale}
+                backgroundScale={rejectBackgroundScale}
+            />
+
+            <LikeCircle
+                circleScale={likeCircleScale}
+                heartScale={likeHeartScale}
+                backgroundScale={likeBackgroundScale}
+            />
+        </View>
+    );
+};
+
 const AnimatedCross = ({
     crossScale,
     backgroundScale,
@@ -122,70 +186,6 @@ const LikeCircle = ({
                 backgroundScale={backgroundScale}
             />
         </Animated.View>
-    );
-};
-
-export const TinderButtons = () => {
-    const { UniversalPositionX } = usePosition();
-
-    const likeCircleScale = useDerivedValue(() => {
-        return UniversalPositionX.value >= 0
-            ? withTiming(1, { duration: 100 })
-            : withTiming(0, { duration: 100 });
-    }, [UniversalPositionX]);
-
-    const rejectCircleScale = useDerivedValue(() => {
-        return UniversalPositionX.value <= 0
-            ? withTiming(1, { duration: 100 })
-            : withTiming(0, { duration: 100 });
-    }, [UniversalPositionX]);
-
-    const likeHeartScale = useDerivedValue(() => {
-        return UniversalPositionX.value > 0
-            ? withTiming(5, { duration: 300 })
-            : withTiming(1, { duration: 200 });
-    }, [UniversalPositionX]);
-
-    const rejectCrossScale = useDerivedValue(() => {
-        return UniversalPositionX.value < 0
-            ? withTiming(10, { duration: 300 })
-            : withTiming(1, { duration: 200 });
-    }, [UniversalPositionX]);
-
-    const likeBackgroundScale = useDerivedValue(() => {
-        return UniversalPositionX.value > 0
-            ? withTiming(1, { duration: 300 })
-            : withTiming(0, { duration: 200 });
-    }, [UniversalPositionX]);
-
-    const rejectBackgroundScale = useDerivedValue(() => {
-        return UniversalPositionX.value < 0
-            ? withTiming(1, { duration: 300 })
-            : withTiming(0, { duration: 200 });
-    }, [UniversalPositionX]);
-
-    return (
-        <View
-            style={{
-                flexDirection: "row",
-                justifyContent: "space-around",
-                width: "100%",
-                position: "absolute",
-                bottom: 0,
-            }}
-        >
-            <RejectCircle
-                circleScale={rejectCircleScale}
-                crossScale={rejectCrossScale}
-                backgroundScale={rejectBackgroundScale}
-            />
-
-            <LikeCircle
-                circleScale={likeCircleScale}
-                heartScale={likeHeartScale}
-                backgroundScale={likeBackgroundScale}
-            />
-        </View>
     );
 };
 
